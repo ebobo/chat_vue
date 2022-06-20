@@ -11,9 +11,7 @@
       </v-col>
 
       <v-col cols="2" class="row-btn">
-        <v-btn color="success lighten-1" @click="sendMessages"
-          >Send message</v-btn
-        >
+        <v-btn color="grey darken-4" @click="sendMessages">Send message</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -46,10 +44,6 @@ export default Vue.extend({
   display: flex;
   margin-top: 0px;
   align-items: center;
-}
-
-.tab-item {
-  background-color: #e3f2fd;
 }
 
 .mini-row {
