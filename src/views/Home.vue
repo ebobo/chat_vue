@@ -4,6 +4,20 @@
       <v-col cols="6">
         <v-text-field
           readonly
+          prepend-icon="mdi-server-network"
+          v-model="mdiServerNetwork"
+          label="Server IP"
+        ></v-text-field>
+      </v-col>
+
+      <v-col cols="2" class="row-btn">
+        <v-btn color="grey darken-3" dark @click="sendMessages">Connect</v-btn>
+      </v-col>
+    </v-row>
+    <v-row justify="center">
+      <v-col cols="6">
+        <v-text-field
+          readonly
           prepend-icon="mdi-message-text-outline"
           v-model="messageToSend"
           label="System ID"
@@ -11,7 +25,9 @@
       </v-col>
 
       <v-col cols="2" class="row-btn">
-        <v-btn color="grey darken-4" @click="sendMessages">Send message</v-btn>
+        <v-btn color="grey darken-3" dark @click="sendMessages"
+          >Send message</v-btn
+        >
       </v-col>
     </v-row>
   </v-container>
@@ -25,9 +41,11 @@ export default Vue.extend({
   name: 'Asconfig',
   data(): {
     signing: boolean;
+    messageToSend: string;
   } {
     return {
       signing: false,
+      messageToSend: '',
     };
   },
 });
