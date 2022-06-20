@@ -1,18 +1,58 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
-  </div>
+  <v-container>
+    <v-row justify="center">
+      <v-col cols="6">
+        <v-text-field
+          readonly
+          prepend-icon="mdi-message-text-outline"
+          v-model="messageToSend"
+          label="System ID"
+        ></v-text-field>
+      </v-col>
+
+      <v-col cols="2" class="row-btn">
+        <v-btn color="success lighten-1" @click="sendMessages"
+          >Send message</v-btn
+        >
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+import Vue from 'vue';
+import { EventBus, LicenseEvent } from '@/utility/eventBus';
 
-@Component({
-  components: {
-    HelloWorld,
+export default Vue.extend({
+  name: 'Asconfig',
+  data(): {
+    signing: boolean;
+  } {
+    return {
+      signing: false,
+    };
   },
-})
-export default class Home extends Vue {}
+});
 </script>
+
+<style lang="scss" scoped>
+.upload-btn {
+  display: flex;
+  margin-top: 15px;
+  align-items: center;
+}
+
+.row-btn {
+  display: flex;
+  margin-top: 0px;
+  align-items: center;
+}
+
+.tab-item {
+  background-color: #e3f2fd;
+}
+
+.mini-row {
+  height: 40px;
+}
+</style>

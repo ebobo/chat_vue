@@ -1,32 +1,109 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <v-app-bar app color="orange accent-3">
+      <div class="d-flex align-center">
+        <h3 class="ml-2">WebSocket - Chat</h3>
+      </div>
+      <v-spacer></v-spacer>
+      <v-btn :to="{ path: '/' }" text>
+        <span class="mr-1">WS</span>
+        <v-icon>mdi-nfc-tap</v-icon>
+      </v-btn>
+      <v-btn :to="{ path: '/about' }" text>
+        <span class="mr-1">About</span>
+        <v-icon>mdi-information-outline</v-icon>
+      </v-btn>
+    </v-app-bar>
+
+    <v-snackbar
+      class="snackbar"
+      :color="snackbarColor"
+      v-model="snackbar"
+      timeout="2000"
+      auto-height
+      top
+    >
+      <v-icon class="pr-3" dark large>{{ snackbarIcon }}</v-icon>
+      {{ snackbarText }}
+      <template v-slot:action="{ attrs }">
+        <v-btn text v-bind="attrs" @click="snackbar = false">Close</v-btn>
+      </template>
+    </v-snackbar>
+
+    <v-main class="main-view">
+      <router-view />
+    </v-main>
+
+    <v-footer fixed color="orange accent-3">
+      <h4 class="ml-2">{{ slogan }}</h4>
+      <v-spacer></v-spacer>
+      <v-btn
+        small
+        href="https://www.autronicafire.com/en/"
+        target="_blank"
+        text
+      >
+        <span class="mr-2">Find us</span>
+        <v-icon>mdi-open-in-new</v-icon>
+      </v-btn>
+    </v-footer>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script lang="ts">
+import Vue from 'vue';
+import { EventBus, LicenseEvent } from '@/utility/eventBus';
+
+export default Vue.extend({
+  name: 'App',
+  created() {
+    EventBus.$on(LicenseEvent.SnackbarError, this.handleSnackbarError);
+    EventBus.$on(LicenseEvent.SnackbarFail, this.handleSnackbarFail);
+    EventBus.$on(LicenseEvent.SnackbarNormal, this.handleSnackbarNormal);
+    EventBus.$on(LicenseEvent.SnackbarSuccess, this.handleSnackbarSuccess);
+  },
+  data: () => ({
+    slogan: process.env.VUE_APP_SLOGAN,
+    snackbar: false,
+    snackbarText: '',
+    snackbarColor: 'grey darken-4',
+    snackbarIcon: 'mdi-information-outline',
+  }),
+  methods: {
+    handleSnackbarError(snackbarText = '') {
+      this.snackbarText = snackbarText;
+      this.snackbarColor = 'red darken-1';
+      this.snackbarIcon = 'mdi-alert-circle-outline';
+      this.snackbar = true;
+    },
+    handleSnackbarFail(snackbarText = '') {
+      this.snackbarText = snackbarText;
+      this.snackbarColor = 'orange darken-4';
+      this.snackbarIcon = 'mdi-alert-outline';
+      this.snackbar = true;
+    },
+    handleSnackbarNormal(snackbarText = '') {
+      this.snackbarText = snackbarText;
+      this.snackbarColor = 'grey darken-4';
+      this.snackbarIcon = 'mdi-information-outline';
+      this.snackbar = true;
+    },
+    handleSnackbarSuccess(snackbarText = '') {
+      this.snackbarText = snackbarText;
+      this.snackbarColor = 'green darken-1';
+      this.snackbarIcon = 'mdi-check-circle-outline';
+      this.snackbar = true;
+    },
+  },
+});
+</script>
+
+<style lang="scss" scoped>
+.main-view {
+  background-color: orange lighten-5;
 }
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+.snackbar {
+  margin-top: 50px;
 }
 </style>
